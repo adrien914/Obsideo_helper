@@ -60,27 +60,61 @@ interactions = [
     {id: 59, name: "Fake a Hunt"},
     {id: 60, name: "Disable player Flashlight"},
     {id: 61, name: "Duplicate household Objects"},
-    {id: 62, name: "Spike Player Heartrate"},
+    {id: 62, name: "Spike Player Heartrate"}
 ]
 
 ghosts = [
-    {id: 1, name: "Effigy", interactions: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27]},
-    {id: 2, name: "Rusalka", interactions: [2,3,4,5,6,7,8,9,10,11,12,13,14,17,18,22,24,25,26,27,45,46,47,48]},
-    {id: 3, name: "Demon", interactions: [1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19,20,21,22,24,25,26,27,28,29,30,31,48]},
-    {id: 4, name: "Shade", interactions: [9,18,14,1,2,3,46,47,11,32,5,6,48,25,13,8,10]},
-    {id: 5, name: "Oni", interactions: [25,13,19,27,15,18,9,5,6,48,12,17,26,33,14,23,24,1,2,3,8,,34,11,10,35,29,31,4,7,16,36]},
-    {id: 6, name: "Yurei", interactions: [15,19,55,14,3,6,25,10,47,21,11,9,46,42,29,56,1,45,34,53,57,32,39,51]},
-    {id: 7, name: "Mare", interactions: [37,11,16,9,13,14,3,38,19,39,22,40,41,6,42,5,43,44,49,50,51,52,12,20,53,54,23,10]},
-    {id: 8, name: "Chimera", interactions: [5,6,9,48,34,55,1,53,3,14,4,7,43,54,16,19,51,38,58,30,8,56,59,60,61,62]}
+    {id: 0, name: "Effigy", interactions: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27]},
+    {id: 1, name: "Rusalka", interactions: [2,3,4,5,6,7,8,9,10,11,12,13,14,17,18,22,24,25,26,27,45,46,47,48]},
+    {id: 2, name: "Demon", interactions: [1,2,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19,20,21,22,24,25,26,27,28,29,30,31,48]},
+    {id: 3, name: "Shade", interactions: [9,18,14,1,2,3,46,47,11,32,5,6,48,25,13,8,10]},
+    {id: 4, name: "Oni", interactions: [25,13,19,27,15,18,9,5,6,48,12,17,26,33,14,23,24,1,2,3,8,34,11,10,35,29,31,4,7,16,36]},
+    {id: 5, name: "Yurei", interactions: [15,19,55,14,3,6,25,10,47,21,11,9,46,42,29,56,1,45,34,53,57,32,39,51]},
+    {id: 6, name: "Mare", interactions: [37,11,16,9,13,14,3,38,19,39,22,40,41,6,42,5,43,44,49,50,51,52,12,20,53,54,23,10]},
+    {id: 7, name: "Chimera", interactions: [5,6,9,48,34,55,1,53,3,14,4,7,43,54,16,19,51,38,58,30,8,56,59,60,61,62]}
 ]
 
 interactions.forEach(interaction => {
     document.getElementById("interactions").innerHTML += `
     <input type="checkbox" id="${interaction.id}">
-    <label class="interaction" for="${interaction.id}">${interaction.name}</label>
+    <label class="interaction" onclick="calculate_ghost()" for="${interaction.id}">${interaction.name}</label>
     `
 })
 
 ghosts.forEach(ghost => {
     document.getElementById("ghost_types").innerHTML += `<div class="ghost" id="${ghost.name}">${ghost.name}</div>`
 })
+
+function calculate_ghost() {
+    setTimeout(function(){ 
+        let html = ""
+        let checked_boxes = document.querySelectorAll("input:checked") 
+        let possible_ghosts = ghosts
+        let final_possible_ghosts = []
+        let checked_interactions = []
+        checked_boxes.forEach(box => {
+            checked_interactions.push(parseInt(box.id))
+        }) 
+        possible_ghosts.forEach(ghost => {
+            possible = true
+            for (let i=0; i < checked_interactions.length; i++) {
+                console.log(checked_interactions[i])
+                if (!ghost.interactions.includes(checked_interactions[i])) {
+                    console.log("break")
+                    possible = false
+                    break
+                }
+            }
+            if (possible) {
+                final_possible_ghosts.push(ghost)
+            }
+        }) 
+        console.log(final_possible_ghosts)
+        final_possible_ghosts.forEach(ghost => {
+            html += `<div class="ghost" id="${ghost.name}">${ghost.name}</div>`
+        })
+        document.getElementById("ghost_types").innerHTML = html
+    }, 50);
+
+    
+}
