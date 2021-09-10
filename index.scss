@@ -1,0 +1,57 @@
+*, ::before, ::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 75vw 1fr;
+    gap: 2rem;
+}
+
+.interactions {
+    max-width: 75vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    gap: .5rem;
+
+    label {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        border: 1px solid black;
+    }
+
+    label:hover {
+        background: gray;
+    }
+
+    input {
+        display: none;
+    }
+
+    input:checked + label {
+        background: green;
+    }
+
+    input:checked + label:hover {
+        background: red;
+    }
+}
+
+.ghost_types {
+    max-width: 25vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .ghost {
+        font-size: 2rem;
+        padding: 1rem;
+    }
+}
